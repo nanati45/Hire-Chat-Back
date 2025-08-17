@@ -90,6 +90,25 @@ export async function POST(request: Request) {
       html: htmlBody,
     });
 
+    // ---  Send Confirmation Email to the Employer ---
+    const confirmationSubject = "Thank You for Contacting Hireside Chat";
+    const confirmationHtmlBody = `
+      <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
+        <h2>Thank you, ${data.contactName}!</h2>
+        <p>Thank you for getting in touch. We’re thrilled to collaborate in meeting your talent needs.</p>
+        <p>We will get back to you in the next 2 business days.</p>
+        <br>
+        <p>Best regards,</p>
+        <p>The Hireside Chat Team</p>
+      </div>
+    `;
+
+    await sendEmail({
+      to: data.email, // Send to the employer's email address
+      subject: confirmationSubject,
+      html: confirmationHtmlBody,
+    });
+
     // 5. Return a success response
     return NextResponse.json(
       { message: "Email sent successfully" },

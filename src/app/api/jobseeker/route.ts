@@ -78,6 +78,25 @@ export async function POST(request: Request) {
       html: htmlBody,
     });
 
+    // Send confirmation email to the job seeker
+    const confirmationSubject =
+      "Congratulations! Your Application Has Been Received";
+    const confirmationHtmlBody = `
+      <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
+        <h2>Congratulations, ${data.fullName}!</h2>
+        <p>Your submission has been sent. We will be in touch with you within the next 2 business days.</p>
+        <br>
+        <p>Best regards,</p>
+        <p>The Hireside Chat Team</p>
+      </div>
+    `;
+
+    await sendEmail({
+      to: data.email, // Send to the job seeker's email address
+      subject: confirmationSubject,
+      html: confirmationHtmlBody,
+    });
+
     return NextResponse.json(
       { message: "Email sent successfully" },
       { status: 200 }
